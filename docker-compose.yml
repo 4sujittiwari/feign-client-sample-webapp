@@ -1,0 +1,34 @@
+version: '3'
+services:
+    eureka-server:
+        image: image/eureka-server
+        expose:
+            - 7070
+        ports:
+            - 7070:7070
+    customer:
+        image: image/customer
+        expose:
+            - 9090
+        ports:
+            - 9090:9090        
+        environment:
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:7070/eureka
+            SERVER_PORT: 9090
+        links:
+            - eureka-server
+        depends_on:
+            - eureka-server
+    customer-detail:
+        image: image/customer-detail
+        expose:
+            - 6060
+        ports:
+            - 6060:6060        
+        environment:
+            EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:7070/eureka
+            SERVER_PORT: 6060
+        links:
+            - eureka-server
+        depends_on:
+            - eureka-server
